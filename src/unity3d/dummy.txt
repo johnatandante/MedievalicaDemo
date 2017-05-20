@@ -1,0 +1,10 @@
+ Volume in drive C has no label.
+ Volume Serial Number is AA72-D554
+
+ Directory of C:\Users\dantedelfavero\Source\Repos\MedievalicaDemo\src\unity3d
+
+20/05/17  19:58    <DIR>          .
+20/05/17  19:58    <DIR>          ..
+20/05/17  19:58                 0 dummy.txt
+               1 File(s)              0 bytes
+               2 Dir(s)  31.679.483.904 bytes free
