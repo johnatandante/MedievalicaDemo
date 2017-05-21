@@ -5,9 +5,25 @@
     "args": [],
     "tasks": [
         {
+            "taskName": "buildWeb",
+            "args": [
+                "${workspaceRoot}/src/webserver/Medievalica.Web/"
+            ],
+            "isBuildCommand": true,
+            "problemMatcher": "$msCompile"
+        },
+         {
             "taskName": "build",
             "args": [
-                "${workspaceRoot}/src/webserver/Medievalica.Web/Medievalica.Web.csproj"
+                "${workspaceRoot}/src/server/Medievalica.Server/"
+            ],
+            "isBuildCommand": true,
+            "problemMatcher": "$msCompile"
+        },
+         {
+            "taskName": "buildClient",
+            "args": [
+                "${workspaceRoot}/src/client/Medievalica.Client/"
             ],
             "isBuildCommand": true,
             "problemMatcher": "$msCompile"

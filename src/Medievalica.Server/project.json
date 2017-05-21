@@ -4,7 +4,9 @@
     "debugType": "portable",
     "emitEntryPoint": true
   },
-  "dependencies": {},
+  "dependencies": {
+    "Medievalica.Game":"1.*"
+  },
   "frameworks": {
     "netcoreapp1.1": {
       "dependencies": {

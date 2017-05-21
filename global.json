@@ -1,0 +1,7 @@
+{
+    "projects":[
+        "Medievalica.Server",
+        "Medievalica.Client",
+        "Medievalica.Game"
+    ]
+}
