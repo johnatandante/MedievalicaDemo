@@ -33,5 +33,7 @@ sysinfo.txt
 *.apk
 *.unitypackage
 
-# Dotnet
-/[Bb]in/
+# Temp: remove this section with a unity3d project done
+Assets/
+Library/
+ProjectSettings/
