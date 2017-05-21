@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ConsoleApplication
+namespace Medievalica.Server
 {
     public class Program
     {

@@ -4,7 +4,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace ConsoleApplication
+namespace Medievalica.Client
 {
     public class Program
     {
@@ -16,48 +16,19 @@ namespace ConsoleApplication
         public static void Main(string[] args)
         {
             try{
-            RunWebSockets().GetAwaiter().GetResult();
+                // RunWebSockets().GetAwaiter().GetResult();
+                var client = new ConsoleClient();
+                
+                while (client.ReadCommand())
+                {
+
+                    client.ExecuteCommand();
+
+                }
+
             }catch(Exception e){
                 Console.WriteLine(e.Message);
             }
-        }
-
-        private static async Task RunWebSockets()
-        {
-            client = new ClientWebSocket();
-            await client.ConnectAsync(new Uri("ws://localhost:5000/test"), CancellationToken.None);
-
-            Console.WriteLine("Connected!");
-
-            bool endUpNow = false;
-            string command = string.Empty;
-            while (!endUpNow)
-            {
-                command = System.Console.ReadLine();
-
-                if(command != "quit"){
-                    endUpNow = true;
-                    continue;
-                } else
-                {
-                    await SendMessage(command);
-                    System.Threading.Thread.Sleep(500);
-                }
-
-            }
-            
-            await client.CloseOutputAsync(WebSocketCloseStatus.NormalClosure, "", CancellationToken.None);
-
-            Console.WriteLine("Hello World!");
-            Console.WriteLine("Premi un tasto per proseguire...");
-            Console.ReadKey();
-        }
-
-        private static async Task SendMessage(string message){
-
-            var bytes = Encoding.UTF8.GetBytes(message);
-            await client.SendAsync(new ArraySegment<byte>(bytes), WebSocketMessageType.Text, true, CancellationToken.None);
-                
         }
 
     }
