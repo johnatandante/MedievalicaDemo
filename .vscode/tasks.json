@@ -6,24 +6,30 @@
     "tasks": [
         {
             "taskName": "buildWeb",
+            "suppressTaskName" : true,
             "args": [
-                "${workspaceRoot}/src/webserver/Medievalica.Web/"
+                "build",
+                "${workspaceRoot}/src/Medievalica.Web/"
             ],
             "isBuildCommand": true,
             "problemMatcher": "$msCompile"
         },
          {
-            "taskName": "build",
+            "taskName": "buildServer",
+            "suppressTaskName" : true,
             "args": [
-                "${workspaceRoot}/src/server/Medievalica.Server/"
+                "build",
+                "${workspaceRoot}/src/Medievalica.Server/"
             ],
             "isBuildCommand": true,
             "problemMatcher": "$msCompile"
         },
          {
             "taskName": "buildClient",
+            "suppressTaskName" : true,
             "args": [
-                "${workspaceRoot}/src/client/Medievalica.Client/"
+                "build",
+                "${workspaceRoot}/src/Medievalica.Client/"
             ],
             "isBuildCommand": true,
             "problemMatcher": "$msCompile"
