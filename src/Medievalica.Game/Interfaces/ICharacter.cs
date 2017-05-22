@@ -4,29 +4,34 @@ using System.Threading.Tasks;
 
 namespace Medievalica.Game.Interfaces
 {
-    public interface ICharacter : ISkilled {
+    public interface ICharacter : IItemWithSkill
+    {
 
-       string NickName { get; }
+        string NickName { get; }
 
-       // Personal Info Character Data
-       //int Age { get; }
-       //int Weight { get; }
-       //int Height { get; }
-       // HairColor { get; }
-       // EyeColor { get; }
-       // SkinColor { get; }
+        // Personal Info Character Data
+        //int Age { get; }
+        //int Weight { get; }
+        //int Height { get; }
+        // HairColor { get; }
+        // EyeColor { get; }
+        // SkinColor { get; }
 
-       int Stamina { get; }
+        float Stamina { get; }
 
-       IEquipment[] Equipment { get; }
+        IEquipment[] Equipment { get; }
 
-       void Attack(ICharacter opponent);
+        void AttackTo(ICharacter opponent);
 
-       void DefenceFrom(ISkilled opponent);
+        float DefenceFrom(IItemWithSkill opponent);
 
-       void EquipWith(IEquipment item);
+        void EquipWith(IEquipment item);
 
-       void Remove(IEquipment item);
+        void Remove(IEquipment item);
+
+        void SendMessage(string message);
+
+        bool IsAlive { get; }
 
     }
 }

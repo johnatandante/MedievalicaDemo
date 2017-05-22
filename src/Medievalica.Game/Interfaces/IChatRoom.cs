@@ -6,6 +6,8 @@ namespace Medievalica.Game.Interfaces
 {
     public interface IChatRoom {
 
+        string Name { get; }
+
         IGameClient[] Clients { get; }
 
         Task Join(IGameClient client);

@@ -9,14 +9,18 @@ namespace Medievalica.Game.Equipment
 
        public abstract string Name { get; }
 
-       public int Precision { get; protected set; }
-       public int AttackPower { get; protected set; }
-       public int DefencePower { get; protected set; }
+       public float Precision { get; protected set; }
+       public float Attack { get; protected set; }
+       public float Defence { get; protected set; }
 
-       public void SetSkill(int precision, int attack, int defence){
+        public float AttackPower => Precision * AttackPower;
+
+        public float DefencePower => Precision * Defence;
+
+        public void SetSkill(float precision, float attack, float defence){
            Precision = precision;
-           AttackPower = attack;
-           DefencePower = defence;
+           Attack = attack;
+           Defence = defence;
 
        }
 

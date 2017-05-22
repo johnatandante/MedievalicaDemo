@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace Medievalica.Game.Interfaces
 {
-    public interface IEquipment : ISkilled {
+    public interface IEquipment : IItemWithSkill {
 
        string Name { get; }
        

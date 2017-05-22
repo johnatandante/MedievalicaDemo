@@ -9,13 +9,13 @@ namespace Medievalica.Game.Controllers
     public class CharacterController
     {
 
-        public static async Task<ICharacter> LoadCharacterProfile(){
+        public static async Task<ICharacter> LoadCharacterProfile(IGameClient client){
             
             // await mocked data
             await Task.Delay(1);
             
             // Mocked  
-            var character = new Character();
+            var character = new Character(client);
 
             character.SetName("Pippo");
             character.EquipWith(await EquipmentController.GetNewAxe());

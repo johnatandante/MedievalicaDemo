@@ -14,14 +14,17 @@ namespace Medievalica.Client {
         MainGame game;
         ICharacter  mainCharacter;
 
+        string currentCommand = string.Empty;
+
         public ConsoleClient(){
             game = MainGame.Instance;
             
             mainCharacter = 
              CharacterController
-             .LoadCharacterProfile()
+             .LoadCharacterProfile(this)
              .GetAwaiter().GetResult();
 
+            
         }
 
         public  async Task Connect(){
@@ -36,20 +39,25 @@ namespace Medievalica.Client {
         }
 
         public async Task Join(IGameRoom room){
-            throw new NotImplementedException("Can't join Game rooms");
-       
+            await Task.Delay(1);
+            await room.Join(mainCharacter);
         }
 
-        public async Task Exit(IGameRoom room){
-            throw new NotImplementedException("Can't exit game rooms");
-       
+        public async Task Exit(IGameRoom room)
+        {
+            await Task.Delay(1);
+            await room.Leave(mainCharacter);
         }
 
-        public Task Join(IChatRoom room) {
+        public async Task Join(IChatRoom room)
+        {
+            await Task.Delay(1);
             throw new NotImplementedException("Can't join chat rooms");
         }
 
-        public Task Exit(IChatRoom room){
+        public async Task Exit(IChatRoom room)
+        {
+            await Task.Delay(1);
             throw new NotImplementedException("Can't exit chat rooms");
 
         }
@@ -96,14 +104,46 @@ namespace Medievalica.Client {
 
         public bool ReadCommand(){
             Console.WriteLine("Waiting for a command...");
-            Task.Delay(5000);
+            currentCommand = Console.ReadLine();
 
-            return true;
+            return !string.IsNullOrEmpty(currentCommand);
 
         } 
 
-        public void ExecuteCommand(){
+        public async Task<bool> ExecuteCommand(){
             //
+            string[] commands = currentCommand.Split(' ');
+            if (commands.Length == 0)
+                return false;
+
+            switch (commands[0])
+            {
+                case "joinroom":
+                    if (commands.Length == 1)
+                        return false;
+
+                    await this.Join(GameRoomController.GetRoom(commands[1]));
+                    break;
+                case "exitroom":
+                    await this.Exit(GameRoomController.GetRoom(commands[1]));
+                    break;
+                case "quit":
+                    await this.Disconnect();
+                    break;
+                default:
+                    break;
+
+            }
+
+            return true;
+
+        }
+
+        public async Task DisplayMessage(string message, ICharacter character)
+        {
+            await Task.Delay(1);
+            Console.WriteLine("Message to " + character.NickName + ": \""+message+" \"");
+
         }
     }
 

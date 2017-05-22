@@ -8,6 +8,10 @@ namespace Medievalica.Game.Characters
 {
     public class Character : ICharacter {
 
+        IGameClient parent;
+
+        bool HasParent => parent != null;
+
        public string NickName { get; protected set; }
 
        // Personal Info Character Data
@@ -18,32 +22,44 @@ namespace Medievalica.Game.Characters
        // EyeColor { get; }
        // SkinColor { get; }
 
-       public int Precision { get; protected set; }
-       public int AttackPower { get; protected set; }
-       public int DefencePower { get; protected set; }
+       public float Precision { get; protected set; }
+       public float Attack { get; protected set; }
+       public float Defence { get; protected set; }
+        
+        public float AttackPower
+        {
+            get { return Attack * Precision; }
+        }
 
-       public int Stamina { get; protected set; }
+        public float DefencePower
+        {
+            get { return Defence * Precision; }
+        }
 
-       List<IEquipment> _Equipment;
-       public IEquipment[] Equipment { 
+        public float Stamina { get; protected set; }
+
+        public bool IsAlive => Stamina > 0f;
+
+        List<IEquipment> _Equipment = new List<IEquipment>();
+        public IEquipment[] Equipment { 
            get {
              return _Equipment.ToArray();
             } 
         }
 
-       public Character() {
+       public Character(IGameClient client = null) {
            NickName = "Character_" + DateTime.Now.Ticks.ToString();
-           _Equipment = new List<IEquipment>();
+            parent = client;
        }
 
        public void SetName(string name) {
            NickName = name;
        }
 
-       public void SetSkill(int precision, int attack, int defence){
+       public void SetSkill(float precision, float attack, float defence){
            Precision = precision;
-           AttackPower = attack;
-           DefencePower = defence;
+           Attack = attack;
+           Defence = defence;
 
        }
 
@@ -55,13 +71,21 @@ namespace Medievalica.Game.Characters
            _Equipment.Remove(item);
        }
 
-       public void Attack(ICharacter opponent){
-
+       public void AttackTo(ICharacter opponent){
+            //
+            Stamina = Math.Min(Stamina - opponent.DefenceFrom(this), 0);
        }
 
-       public void DefenceFrom(ISkilled opponent){
-
+       public float DefenceFrom(IItemWithSkill opponent){
+            //
+            return Math.Max(opponent.AttackPower - this.DefencePower, 0);
        }
 
+        public void SendMessage(string message)
+        {
+            if(HasParent)
+                parent.DisplayMessage(message, this);
+            
+        }
     }
 }

@@ -16,5 +16,6 @@ namespace Medievalica.Game.Interfaces
         Task Join(IChatRoom room);
         Task Exit(IChatRoom room);
 
+        Task DisplayMessage(string message, ICharacter character);
     }
 }

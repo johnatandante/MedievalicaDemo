@@ -8,5 +8,16 @@ namespace Medievalica.Game.Interfaces
 
        ICharacter[] CharacterList { get; }
 
+        IEquipment[] EquipmentList { get; }
+       
+        string Name { get; }
+
+        Task Join(ICharacter client);
+
+        Task Leave(ICharacter client);
+
+        Task StreamMessage(string message);
+
+        Task Add(IEquipment[] equipments);
     }
 }
