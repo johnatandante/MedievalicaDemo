@@ -29,15 +29,30 @@ namespace Medievalica.Game.Rooms
         public async Task Join(ICharacter character)
         {
             await Task.Delay(1);
-            _CharacterList.Add(character);
-            character.SendMessage("You joined room " + Name + " with " + EquipmentList.Length + " equipment to find and " + (CharacterList.Length - 1) + " other players");
+            if (_CharacterList.Contains(character))
+            {
+                character.SendMessage("You already joined room " + Name );
+            }
+            else { 
+
+                _CharacterList.Add(character);
+                character.SendMessage("You joined room " + Name + " with " + EquipmentList.Length + " equipment to find and " + (CharacterList.Length - 1) + " other players");
+            }
         }
 
         public async Task Leave(ICharacter character)
         {
             await Task.Delay(1);
-            _CharacterList.Remove(character);
-            character.SendMessage("You left room " + Name);
+
+            if (!_CharacterList.Contains(character))
+            {
+                character.SendMessage("You haven't joined room " + Name);
+            }
+            else { 
+
+                _CharacterList.Remove(character);
+                character.SendMessage("You left room " + Name);
+            }
         }
 
         public async Task StreamMessage(string message)
@@ -47,8 +62,6 @@ namespace Medievalica.Game.Rooms
                 character.SendMessage(message);
 
         }
-
-
 
     }
 }

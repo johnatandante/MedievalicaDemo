@@ -4,4 +4,8 @@
     <TargetFramework>netcoreapp1.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Medievalica.Game.Utils\Medievalica.Game.Utils.csproj" />
+  </ItemGroup>
+
 </Project>

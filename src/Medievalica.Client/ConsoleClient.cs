@@ -5,37 +5,46 @@ using System.Threading.Tasks;
 using Medievalica.Game;
 using Medievalica.Game.Interfaces;
 using Medievalica.Game.Controllers;
-using System.Net.WebSockets;
+using Medievalica.Game.Online;
 
 namespace Medievalica.Client {
 
     public class ConsoleClient : IGameClient {
 
-        MainGame game;
+        public string Name { get; private set; }
+
+        public string TokenId { get; private set; }
+
+        IGame CurrentGame { get; set; }
         ICharacter  mainCharacter;
 
         string currentCommand = string.Empty;
 
         public ConsoleClient(){
-            game = MainGame.Instance;
+            CurrentGame = MainGame.Instance;
             
             mainCharacter = 
              CharacterController
              .LoadCharacterProfile(this)
              .GetAwaiter().GetResult();
 
-            
         }
 
-        public  async Task Connect(){
-            await game.Connect(this);
+        public void SetName(string name)
+        {
+            Name = name;
+
+        }
+
+        public async Task Connect(){
+            TokenId = await CurrentGame.Connect(this);
             
         }
 
         public  async Task Disconnect(){
 
-            await game.Disconnect(this);
-
+            await CurrentGame.Disconnect(this);
+            TokenId = string.Empty;
         }
 
         public async Task Join(IGameRoom room){
@@ -62,46 +71,6 @@ namespace Medievalica.Client {
 
         }
 
-        ClientWebSocket client;
-
-        private async Task RunWebSockets()
-        {
-            client = new ClientWebSocket();
-            await client.ConnectAsync(new Uri("ws://localhost:5000/test"), CancellationToken.None);
-
-            Console.WriteLine("Connected!");
-
-            bool endUpNow = false;
-            string command = string.Empty;
-            while (!endUpNow)
-            {
-                command = System.Console.ReadLine();
-
-                if(command != "quit"){
-                    endUpNow = true;
-                    continue;
-                } else
-                {
-                    await SendMessage(command);
-                    System.Threading.Thread.Sleep(500);
-                }
-
-            }
-            
-            await client.CloseOutputAsync(WebSocketCloseStatus.NormalClosure, "", CancellationToken.None);
-
-            Console.WriteLine("Hello World!");
-            Console.WriteLine("Premi un tasto per proseguire...");
-            Console.ReadKey();
-        }
-
-        private async Task SendMessage(string message){
-
-            var bytes = Encoding.UTF8.GetBytes(message);
-            await client.SendAsync(new ArraySegment<byte>(bytes), WebSocketMessageType.Text, true, CancellationToken.None);
-                
-        }
-
         public bool ReadCommand(){
             Console.WriteLine("Waiting for a command...");
             currentCommand = Console.ReadLine();
@@ -118,14 +87,21 @@ namespace Medievalica.Client {
 
             switch (commands[0])
             {
+                case "joinonline":
+                    CurrentGame = OnlineGame.Instance;
+
+                    break;
+                case "exitonline":
+
+                    break;
                 case "joinroom":
                     if (commands.Length == 1)
                         return false;
 
-                    await this.Join(GameRoomController.GetRoom(commands[1]));
+                    await this.Join(CurrentGame.GetRoom( commands[1]));
                     break;
                 case "exitroom":
-                    await this.Exit(GameRoomController.GetRoom(commands[1]));
+                    await this.Exit(CurrentGame.GetRoom( commands[1]));
                     break;
                 case "quit":
                     await this.Disconnect();
@@ -145,6 +121,14 @@ namespace Medievalica.Client {
             Console.WriteLine("Message to " + character.NickName + ": \""+message+" \"");
 
         }
+
+        public async Task DisplayMessage(string message)
+        {
+            await Task.Delay(1);
+            Console.WriteLine( message);
+
+        }
+
     }
 
 }

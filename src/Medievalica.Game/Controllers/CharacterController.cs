@@ -13,9 +13,9 @@ namespace Medievalica.Game.Controllers
             
             // await mocked data
             await Task.Delay(1);
-            
+
             // Mocked  
-            var character = new Character(client);
+            Character character = new Character(client);
 
             character.SetName("Pippo");
             character.EquipWith(await EquipmentController.GetNewAxe());

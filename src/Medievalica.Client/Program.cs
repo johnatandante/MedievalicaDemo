@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Net.WebSockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -8,16 +7,15 @@ namespace Medievalica.Client
 {
     public class Program
     {
-        static ClientWebSocket client;
 
-        /// <summary>
-        /// https://radu-matei.github.io/blog/aspnet-core-websockets-middleware/
-        /// </summary>
         public static void Main(string[] args)
         {
             try{
-                // RunWebSockets().GetAwaiter().GetResult();
+
                 ConsoleClient client = new ConsoleClient();
+                client.SetName("Dante");
+
+                client.Connect().Wait();
                 
                 while (client.ReadCommand())
                 {

@@ -7,6 +7,8 @@ namespace Medievalica.Game.Interfaces
     
     public interface IGameClient {
 
+        string Name { get; }
+
         Task Connect();
         Task Disconnect();
 
@@ -17,5 +19,8 @@ namespace Medievalica.Game.Interfaces
         Task Exit(IChatRoom room);
 
         Task DisplayMessage(string message, ICharacter character);
+
+        Task DisplayMessage(string message);
+
     }
 }
