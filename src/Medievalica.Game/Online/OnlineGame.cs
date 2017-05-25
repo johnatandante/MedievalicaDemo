@@ -14,7 +14,7 @@ namespace Medievalica.Game.Online
        
         static OnlineGame _Instance;
 
-        List<IGameClient> clients => throw new NotImplementedException();
+        IGameClient Client { get; set; } 
 
         public static OnlineGame Instance
         {
@@ -37,17 +37,19 @@ namespace Medievalica.Game.Online
 
         public async Task<string> Connect(IGameClient client)
         {
+            Client = client;
+
             socket = new WebSoketGameClient();
-            
-            await Task.Delay(1);
-            socket.Send(CommandController.GetNewSimpleCommand("login"));
 
-            throw new NotImplementedException();
-            //clients.Add(client);
+            var command = CommandController.GetNewSimpleCommand("login");
+            command.OnDataReady += GetLoginToken;
+            await socket.Send(command);
 
-            //await StreamMessage(string.Format("{0} has joined the game", client.Name));
+        }
 
-            //return Guid.NewGuid().ToString();
+        private void GetLoginToken(object sender, DataReadyEventArgs args)
+        {
+            Client.SetTokenId(args.Result.Data.ToString());
 
         }
 
@@ -61,8 +63,8 @@ namespace Medievalica.Game.Online
 
         public async Task Disconnect(IGameClient client)
         {
-            await Task.Delay(1);
-            throw new NotImplementedException();
+            await StreamMessage(client.Name + " has left the online game");
+            await socket.Disconnect();
 
         }
 

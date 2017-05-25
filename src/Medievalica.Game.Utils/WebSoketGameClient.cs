@@ -7,6 +7,8 @@ using Newtonsoft.Json;
 using Medievalica.Game.Utils.Interfaces;
 using System.IO;
 using Medievalica.Game.Utils.Commands;
+using Medievalica.Game.Utils.Events;
+using static Medievalica.Game.Utils.Events.CommandGameHelper;
 
 namespace Medievalica.Game.Utils
 {
@@ -48,8 +50,6 @@ namespace Medievalica.Game.Utils
         }
 
         public event DataReadDelegate OnDataReady;
-
-        public  delegate void DataReadDelegate(object sender, DataReadyEventArgs args);
 
         public async Task Connect()
         {
@@ -106,7 +106,7 @@ namespace Medievalica.Game.Utils
             }
         }
 
-        public async void Send(ICommand command)
+        public async Task Send(ICommand command)
         {
             await Send(JsonConvert.SerializeObject(command));
 
@@ -169,15 +169,4 @@ namespace Medievalica.Game.Utils
         }
     }
 
-    public class DataReadyEventArgs : EventArgs
-    {
-        public IResultCommand Result { get; private set; }
-
-        public DataReadyEventArgs(IResultCommand command)
-        {
-            Result = command;
-
-        }
-
-    }
 }
