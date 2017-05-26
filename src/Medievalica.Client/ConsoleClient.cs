@@ -98,10 +98,10 @@ namespace Medievalica.Client {
                     if (commands.Length == 1)
                         return false;
 
-                    await this.Join(CurrentGame.GetRoom( commands[1]));
+                    await this.Join(await CurrentGame.GetRoom( commands[1]));
                     break;
                 case "exitroom":
-                    await this.Exit(CurrentGame.GetRoom( commands[1]));
+                    await this.Exit(await CurrentGame.GetRoom( commands[1]));
                     break;
                 case "quit":
                     await this.Disconnect();

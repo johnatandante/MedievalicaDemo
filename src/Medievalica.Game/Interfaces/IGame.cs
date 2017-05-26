@@ -13,7 +13,7 @@ namespace Medievalica.Game.Interfaces
 
         Task Disconnect(IGameClient client);
 
-        IGameRoom GetRoom(string room);
+        Task<IGameRoom> GetRoom(string room);
 
     }
 }

@@ -1,5 +1,5 @@
 ﻿using System;
-using Medievalica.Game.Utils.Interfaces;
+using Medievalica.Game.Utils.Events;
 
 namespace Medievalica.Game.Utils.Commands
 {
@@ -11,9 +11,11 @@ namespace Medievalica.Game.Utils.Commands
         public SimpleCommand(string commandName)
         {
             this.commandName = commandName;
+            TokenId = CommandGameHelper.GetNewTokenId();
         }
 
         public string Command => commandName;
 
+        public string TokenId { get; private set; }
     }
 }

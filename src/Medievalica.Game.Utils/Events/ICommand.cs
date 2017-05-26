@@ -8,7 +8,7 @@ namespace Medievalica.Game.Utils.Events
     {
         string Command { get; }
 
-        event CommandGameHelper.DataReadDelegate OnDataReady;
-
+        string TokenId { get; }
+      
     }
 }

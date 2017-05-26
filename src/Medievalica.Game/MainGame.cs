@@ -9,16 +9,18 @@ namespace Medievalica.Game
 {
     public class MainGame : IGame
     {
-        
+
         static Dictionary<string, IGameRoom> GameRooms = new Dictionary<string, IGameRoom>();
 
         static MainGame _Instance;
 
         List<IGameClient> clients = new List<IGameClient>();
 
-        public static IGame Instance {
-            get{
-                if(_Instance == null)
+        public static IGame Instance
+        {
+            get
+            {
+                if (_Instance == null)
                     _Instance = new MainGame();
 
                 return _Instance;
@@ -29,7 +31,8 @@ namespace Medievalica.Game
 
         public MainGame() { }
 
-        public async Task<string> Connect(IGameClient client){
+        public async Task<string> Connect(IGameClient client)
+        {
             await Task.Delay(1);
             clients.Add(client);
 
@@ -45,7 +48,8 @@ namespace Medievalica.Game
                 await client.DisplayMessage(message);
         }
 
-        public async Task Disconnect(IGameClient client){
+        public async Task Disconnect(IGameClient client)
+        {
             await Task.Delay(1);
 
             await StreamMessage(string.Format("{0} has left the game", client.Name));
@@ -54,8 +58,9 @@ namespace Medievalica.Game
 
         }
 
-        public IGameRoom GetRoom(string room)
+        public async Task<IGameRoom> GetRoom(string room)
         {
+            await Task.Delay(1);
             if (!GameRooms.ContainsKey(room))
                 GameRooms.Add(room, GameRoomController.GetNew(room));
 

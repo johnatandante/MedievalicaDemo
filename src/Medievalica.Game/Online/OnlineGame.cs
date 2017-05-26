@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Medievalica.Game.Utils;
 using Medievalica.Game.Utils.Commands;
+using Medievalica.Game.Utils.Events;
 
 namespace Medievalica.Game.Online
 {
@@ -42,35 +43,44 @@ namespace Medievalica.Game.Online
             socket = new WebSoketGameClient();
 
             var command = CommandController.GetNewSimpleCommand("login");
-            command.OnDataReady += GetLoginToken;
+           // socket.OnDataReady += ReadDataFromSocket;
+
             await socket.Send(command);
 
-        }
-
-        private void GetLoginToken(object sender, DataReadyEventArgs args)
-        {
-            Client.SetTokenId(args.Result.Data.ToString());
-
+            return await socket.ReceiveJson();
         }
 
         public async Task StreamMessage(string message)
         {
-            //foreach (IGameClient client in clients)
-            //    await client.DisplayMessage(message);
-            await Task.Delay(1);
-            throw new NotImplementedException();
+            if (!socket.Connected)
+                return;
+
+            var command = CommandController.GetNewMessageWithData("message", message);
+
+            await socket.Send(command);
+
         }
 
         public async Task Disconnect(IGameClient client)
         {
+            if (!socket.Connected)
+                return;
+
             await StreamMessage(client.Name + " has left the online game");
             await socket.Disconnect();
 
         }
 
-        public IGameRoom GetRoom(string room)
+        public async Task<IGameRoom> GetRoom(string room)
         {
-            throw new NotImplementedException();
+            if (!socket.Connected)
+                return default(IGameRoom);
+
+            var command = CommandController.GetNewQueryCommand("queryroom", room);
+            await socket.Send(command);
+
+            return await socket.Receive<IGameRoom>();
+
         }
     }
 }

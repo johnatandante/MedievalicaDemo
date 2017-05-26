@@ -9,5 +9,9 @@ namespace Medievalica.Game.Utils.Events
 
         public delegate void DataReadDelegate(object sender, DataReadyEventArgs args);
 
+        internal static string GetNewTokenId()
+        {
+            return Guid.NewGuid().ToString();
+        }
     }
 }

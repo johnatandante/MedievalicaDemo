@@ -4,7 +4,6 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
-using Medievalica.Game.Utils.Interfaces;
 using System.IO;
 using Medievalica.Game.Utils.Commands;
 using Medievalica.Game.Utils.Events;
@@ -61,9 +60,9 @@ namespace Medievalica.Game.Utils
             loop = Task.Run(
                 () =>
                 {
-                    while(Connected)
+                    while (Connected)
                     {
-                        string result = Receive().GetAwaiter().GetResult();
+                        string result = ReceiveJson().GetAwaiter().GetResult();
                         if (OnDataReady != null)
                             OnDataReady(this, new DataReadyEventArgs(JsonConvert.DeserializeObject<IResultCommand>(result)));
 
@@ -116,9 +115,14 @@ namespace Medievalica.Game.Utils
         {
             if (!Connected)
                 return;
-
-            await client.SendAsync(new ArraySegment<byte>(Encoding.UTF8.GetBytes(message)), WebSocketMessageType.Text, true, CancellationToken.None);
-
+            try
+            {
+                await client.SendAsync(new ArraySegment<byte>(Encoding.UTF8.GetBytes(message)), WebSocketMessageType.Text, true, CancellationToken.None);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
         }
 
         public async Task SendStream(byte[] message)
@@ -127,24 +131,66 @@ namespace Medievalica.Game.Utils
             if (!Connected)
                 return;
 
-            await client.SendAsync(new ArraySegment<byte>(message), WebSocketMessageType.Text, true, CancellationToken.None);
-
+            try
+            {
+                await client.SendAsync(new ArraySegment<byte>(message), WebSocketMessageType.Text, true, CancellationToken.None);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
         }
 
-        public async Task<string> Receive()
+        public async Task<T> Receive<T>()
         {
-            var segment = new ArraySegment<byte>();
-            var result = await client.ReceiveAsync(segment, CancellationToken.None);
+            T result;
+            try
+            {
+                result = JsonConvert.DeserializeObject<T>(await ReceiveJson());
+            }
+            catch (Exception)
+            {
+                result = default(T);
+            }
 
-            return Encoding.UTF8.GetString(segment.Array);
+            return result;
+        }
+
+        public async Task<string> ReceiveJson()
+        {
+            try
+            {
+
+                var segment = new ArraySegment<byte>();
+                var result = await client.ReceiveAsync(segment, CancellationToken.None);
+
+                return Encoding.UTF8.GetString(segment.Array);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+
+                return string.Empty;
+            }
+
         }
 
         public async Task<byte[]> ReceiveStream()
         {
-            var segment = new ArraySegment<byte>();
-            var result = await client.ReceiveAsync(segment, CancellationToken.None);
+            try
+            {
 
-            return segment.Array;
+                var segment = new ArraySegment<byte>();
+                var result = await client.ReceiveAsync(segment, CancellationToken.None);
+
+                return segment.Array;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+
+                return new byte[] { };
+            }
         }
 
         public async Task ReConnect()
@@ -163,7 +209,7 @@ namespace Medievalica.Game.Utils
 
         public async void Dispose()
         {
-            if(Connected)
+            if (Connected)
                 await Disconnect();
 
         }

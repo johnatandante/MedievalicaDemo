@@ -1,4 +1,5 @@
-﻿using Medievalica.Game.Utils.Interfaces;
+﻿
+using Medievalica.Game.Utils.Events;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -13,6 +14,16 @@ namespace Medievalica.Game.Utils.Commands
 
         }
 
+        public static ICommand GetNewMessageWithData(string commandName, string message)
+        {
+            return new Command(commandName, message);
+        }
+
+
+        public static ICommand GetNewQueryCommand(string commandName, params string[] args)
+        {
+            return new QueryCommand(commandName, args);
+        }
 
     }
 }
