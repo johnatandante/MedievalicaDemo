@@ -7,6 +7,8 @@ namespace Medievalica.Game.Interfaces
     {
         string[] Rooms { get; }
 
+        bool Online { get; }
+
         Task<string> Connect(IGameClient client);
 
         Task StreamMessage(string message);

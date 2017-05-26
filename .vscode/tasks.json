@@ -4,26 +4,7 @@
     "isShellCommand": true,
     "args": [],
     "tasks": [
-        {
-            "taskName": "buildWeb",
-            "suppressTaskName" : true,
-            "args": [
-                "build",
-                "${workspaceRoot}/src/Medievalica.Web/"
-            ],
-            "isBuildCommand": true,
-            "problemMatcher": "$msCompile"
-        },
-         {
-            "taskName": "buildServer",
-            "suppressTaskName" : true,
-            "args": [
-                "build",
-                "${workspaceRoot}/src/Medievalica.Server/"
-            ],
-            "isBuildCommand": true,
-            "problemMatcher": "$msCompile"
-        },
+
          {
             "taskName": "buildClient",
             "suppressTaskName" : true,

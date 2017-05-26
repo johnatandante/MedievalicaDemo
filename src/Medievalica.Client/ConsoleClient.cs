@@ -37,6 +37,7 @@ namespace Medievalica.Client {
         }
 
         public async Task Connect(){
+
             TokenId = await CurrentGame.Connect(this);
             
         }
@@ -80,31 +81,42 @@ namespace Medievalica.Client {
         } 
 
         public async Task<bool> ExecuteCommand(){
-            //
+
             string[] commands = currentCommand.Split(' ');
             if (commands.Length == 0)
                 return false;
 
             switch (commands[0])
             {
+                case "goonline":
                 case "joinonline":
-                    CurrentGame = OnlineGame.Instance;
+                    if(!CurrentGame.Online)
+                        CurrentGame = OnlineGame.Instance;
+
+                    await Connect();
 
                     break;
-                case "exitonline":
-
+                case "gooffline":
+                    if (CurrentGame.Online)
+                    {
+                        await Disconnect();
+                        CurrentGame = MainGame.Instance;
+                    }
                     break;
                 case "joinroom":
                     if (commands.Length == 1)
                         return false;
 
                     await this.Join(await CurrentGame.GetRoom( commands[1]));
+
                     break;
                 case "exitroom":
                     await this.Exit(await CurrentGame.GetRoom( commands[1]));
+
                     break;
                 case "quit":
                     await this.Disconnect();
+
                     break;
                 default:
                     break;

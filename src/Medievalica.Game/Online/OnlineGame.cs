@@ -30,9 +30,13 @@ namespace Medievalica.Game.Online
 
         public string[] Rooms => throw new NotImplementedException();
 
+        public bool Online => socket.Connected;
+
         WebSoketGameClient socket;
 
         public OnlineGame() {
+
+            socket = new WebSoketGameClient();
 
         }
 
@@ -40,24 +44,22 @@ namespace Medievalica.Game.Online
         {
             Client = client;
 
-            socket = new WebSoketGameClient();
+            await socket.Connect();
+            
+            await socket.Send(CommandController.Login);
 
-            var command = CommandController.GetNewSimpleCommand("login");
-           // socket.OnDataReady += ReadDataFromSocket;
+            IResultCommand result = await socket.Receive<IResultCommand>();
+        
+            return result != null ? result.TokenId : string.Empty;
 
-            await socket.Send(command);
-
-            return await socket.ReceiveJson();
         }
 
         public async Task StreamMessage(string message)
         {
             if (!socket.Connected)
                 return;
-
-            var command = CommandController.GetNewMessageWithData("message", message);
-
-            await socket.Send(command);
+            
+            await socket.Send(CommandController.NewMessage(message));
 
         }
 
@@ -76,10 +78,12 @@ namespace Medievalica.Game.Online
             if (!socket.Connected)
                 return default(IGameRoom);
 
-            var command = CommandController.GetNewQueryCommand("queryroom", room);
+            var command = CommandController.Query("queryroom", room);
             await socket.Send(command);
 
-            return await socket.Receive<IGameRoom>();
+            IResultCommand result = await socket.Receive<IResultCommand>();
+
+            return result != null ? result.Data as IGameRoom : default(IGameRoom);
 
         }
     }

@@ -5,17 +5,6 @@
    "version": "0.2.0",
    "configurations": [
        {
-           "name": "Server - .NET Core Launch (console)",
-           "type": "coreclr",
-           "request": "launch",
-           "preLaunchTask": "buildServer",
-           "program": "${workspaceRoot}/src/Medievalica.Server/bin/Debug/netcoreapp1.1/Medievalica.Server.dll",
-           "args": [],
-           "cwd": "${workspaceRoot}",
-           "stopAtEntry": false,
-           "console": "internalConsole"
-       },
-       {
            "name": "Client - .NET Core Launch (console)",
            "type": "coreclr",
            "request": "launch",

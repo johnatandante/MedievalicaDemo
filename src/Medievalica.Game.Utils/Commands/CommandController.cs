@@ -8,19 +8,32 @@ namespace Medievalica.Game.Utils.Commands
 {
     public class CommandController
     {
-        public static ICommand GetNewSimpleCommand(string commandName)
+        public const string LoginCommand = "login";
+
+        public const string MessageCommand = "message";
+
+        public static ICommand Simple(string commandName)
         {
             return new SimpleCommand(commandName);
 
         }
 
-        public static ICommand GetNewMessageWithData(string commandName, string message)
+        public static ICommand Login
         {
-            return new Command(commandName, message);
+            get
+            {
+                return new SimpleCommand(LoginCommand);
+            }
+
+        }
+
+        public static ICommand NewMessage(string message)
+        {
+            return new Command(MessageCommand, message);
         }
 
 
-        public static ICommand GetNewQueryCommand(string commandName, params string[] args)
+        public static ICommand Query(string commandName, params string[] args)
         {
             return new QueryCommand(commandName, args);
         }

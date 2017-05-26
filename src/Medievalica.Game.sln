@@ -1,0 +1,46 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26430.6
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Medievalica.Game", "Medievalica.Game\Medievalica.Game.csproj", "{9BF9BCBD-754C-454C-84BD-D6BE131E1B14}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Medievalica.Server", "Medievalica.Server\Medievalica.Server.csproj", "{02674538-A30D-4B11-A362-9B3E33F5627A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Medievalica.Client", "Medievalica.Client\Medievalica.Client.csproj", "{69ECCDA5-2C00-401C-905E-EFCDAB09A831}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Medievalica.Web", "Medievalica.Web\Medievalica.Web.csproj", "{0F2E0F39-8921-4158-870B-1E572F6D764A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Medievalica.Game.Utils", "Medievalica.Game.Utils\Medievalica.Game.Utils.csproj", "{21AB8676-7A9E-4262-B12D-0FF9B8D8D014}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9BF9BCBD-754C-454C-84BD-D6BE131E1B14}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9BF9BCBD-754C-454C-84BD-D6BE131E1B14}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9BF9BCBD-754C-454C-84BD-D6BE131E1B14}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9BF9BCBD-754C-454C-84BD-D6BE131E1B14}.Release|Any CPU.Build.0 = Release|Any CPU
+		{02674538-A30D-4B11-A362-9B3E33F5627A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{02674538-A30D-4B11-A362-9B3E33F5627A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{02674538-A30D-4B11-A362-9B3E33F5627A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{02674538-A30D-4B11-A362-9B3E33F5627A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{69ECCDA5-2C00-401C-905E-EFCDAB09A831}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{69ECCDA5-2C00-401C-905E-EFCDAB09A831}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{69ECCDA5-2C00-401C-905E-EFCDAB09A831}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{69ECCDA5-2C00-401C-905E-EFCDAB09A831}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0F2E0F39-8921-4158-870B-1E572F6D764A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0F2E0F39-8921-4158-870B-1E572F6D764A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0F2E0F39-8921-4158-870B-1E572F6D764A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0F2E0F39-8921-4158-870B-1E572F6D764A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{21AB8676-7A9E-4262-B12D-0FF9B8D8D014}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{21AB8676-7A9E-4262-B12D-0FF9B8D8D014}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{21AB8676-7A9E-4262-B12D-0FF9B8D8D014}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{21AB8676-7A9E-4262-B12D-0FF9B8D8D014}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

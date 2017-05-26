@@ -17,6 +17,8 @@ namespace Medievalica.Game.Utils
     public class WebSoketGameClient : IDisposable
     {
 
+        static string uri = "ws://localhost:5000/ws";
+
         Task loop;
 
         ClientWebSocket client;
@@ -40,6 +42,8 @@ namespace Medievalica.Game.Utils
             }
         }
 
+        private string TokenId { get; set; }
+
         public WebSoketGameClient()
         {
             client = new ClientWebSocket();
@@ -55,23 +59,23 @@ namespace Medievalica.Game.Utils
             if (Initialized)
                 return;
 
-            await client.ConnectAsync(new Uri("ws://localhost:5000/ws"), CancellationToken.None);
+            await client.ConnectAsync(new Uri(uri), CancellationToken.None);
 
-            loop = Task.Run(
-                () =>
-                {
-                    while (Connected)
-                    {
-                        string result = ReceiveJson().GetAwaiter().GetResult();
-                        if (OnDataReady != null)
-                            OnDataReady(this, new DataReadyEventArgs(JsonConvert.DeserializeObject<IResultCommand>(result)));
+            //loop = Task.Run(
+            //    () =>
+            //    {
+            //        while (Connected)
+            //        {
+            //            string result = ReceiveJson().GetAwaiter().GetResult();
+            //            if (OnDataReady != null)
+            //                OnDataReady(this, new DataReadyEventArgs(JsonConvert.DeserializeObject<IResultCommand>(result)));
 
-                        Task.Delay(750).Wait();
+            //            Task.Delay(750).Wait();
 
-                    }
+            //        }
 
-                }
-            );
+            //    }
+            //);
         }
 
         public static async void TestWebSockets()
@@ -111,7 +115,7 @@ namespace Medievalica.Game.Utils
 
         }
 
-        public async Task Send(string message)
+        async Task Send(string message)
         {
             if (!Connected)
                 return;
@@ -125,7 +129,7 @@ namespace Medievalica.Game.Utils
             }
         }
 
-        public async Task SendStream(byte[] message)
+        async Task SendStream(byte[] message)
         {
 
             if (!Connected)
@@ -156,7 +160,7 @@ namespace Medievalica.Game.Utils
             return result;
         }
 
-        public async Task<string> ReceiveJson()
+        async Task<string> ReceiveJson()
         {
             try
             {
@@ -175,7 +179,7 @@ namespace Medievalica.Game.Utils
 
         }
 
-        public async Task<byte[]> ReceiveStream()
+        async Task<byte[]> ReceiveStream()
         {
             try
             {

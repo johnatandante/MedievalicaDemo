@@ -29,6 +29,8 @@ namespace Medievalica.Game
 
         public string[] Rooms => GameRooms.Keys.ToArray();
 
+        public bool Online => false;
+
         public MainGame() { }
 
         public async Task<string> Connect(IGameClient client)
