@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -16,6 +17,7 @@ namespace Medievalica.Client {
         public string TokenId { get; private set; }
 
         IGame CurrentGame { get; set; }
+
         ICharacter  mainCharacter;
 
         string currentCommand = string.Empty;
@@ -116,6 +118,9 @@ namespace Medievalica.Client {
                     break;
                 case "quit":
                     await this.Disconnect();
+                    break;
+                case "send":
+                    await this.StreamMessage( string.Join(" ", commands.Skip(1)));
 
                     break;
                 default:
@@ -127,6 +132,11 @@ namespace Medievalica.Client {
 
         }
 
+        public async Task StreamMessage(string message)
+        {
+            await CurrentGame.StreamMessage(message);
+        }
+        
         public async Task DisplayMessage(string message, ICharacter character)
         {
             await Task.Delay(1);

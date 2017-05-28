@@ -4,18 +4,20 @@ using Medievalica.Game.Utils.Events;
 namespace Medievalica.Game.Utils.Commands
 {
 
-    internal class SimpleCommand : ICommand
+    public class SimpleCommand : ICommand
     {
-        private string commandName;
 
         public SimpleCommand(string commandName)
         {
-            this.commandName = commandName;
+            Command = commandName;
             TokenId = CommandGameHelper.GetNewTokenId();
         }
 
-        public string Command => commandName;
+        public string Command { get; set; }
 
-        public string TokenId { get; private set; }
+        public string TokenId { get; set; }
+
+        public object Data { get; set; }
+
     }
 }

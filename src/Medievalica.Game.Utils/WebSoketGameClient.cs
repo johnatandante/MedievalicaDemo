@@ -8,6 +8,7 @@ using System.IO;
 using Medievalica.Game.Utils.Commands;
 using Medievalica.Game.Utils.Events;
 using static Medievalica.Game.Utils.Events.CommandGameHelper;
+using Medievalica.Game.Utils.Messages;
 
 namespace Medievalica.Game.Utils
 {
@@ -19,9 +20,7 @@ namespace Medievalica.Game.Utils
 
         static string uri = "ws://localhost:5000/ws";
 
-        Task loop;
-
-        ClientWebSocket client;
+        protected ClientWebSocket client;
 
         public bool Initialized
         {
@@ -47,35 +46,24 @@ namespace Medievalica.Game.Utils
         public WebSoketGameClient()
         {
             client = new ClientWebSocket();
-
-            //client.Options.KeepAliveInterval
-
+            
         }
 
-        public event DataReadDelegate OnDataReady;
+        public event DataReadDelegate OnMessageReady;
+
+        protected void Notify(object message)
+        {
+            if (OnMessageReady != null)
+                OnMessageReady(this, new DataReadyEventArgs(message));
+        }
 
         public async Task Connect()
         {
             if (Initialized)
                 return;
-
+            
             await client.ConnectAsync(new Uri(uri), CancellationToken.None);
 
-            //loop = Task.Run(
-            //    () =>
-            //    {
-            //        while (Connected)
-            //        {
-            //            string result = ReceiveJson().GetAwaiter().GetResult();
-            //            if (OnDataReady != null)
-            //                OnDataReady(this, new DataReadyEventArgs(JsonConvert.DeserializeObject<IResultCommand>(result)));
-
-            //            Task.Delay(750).Wait();
-
-            //        }
-
-            //    }
-            //);
         }
 
         public static async void TestWebSockets()
@@ -125,7 +113,7 @@ namespace Medievalica.Game.Utils
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
+                Console.WriteLine("Error on sending:" + e.Message);
             }
         }
 
@@ -152,9 +140,11 @@ namespace Medievalica.Game.Utils
             {
                 result = JsonConvert.DeserializeObject<T>(await ReceiveJson());
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 result = default(T);
+
+                Console.WriteLine("Error on receving:" + e.Message);
             }
 
             return result;
@@ -165,10 +155,10 @@ namespace Medievalica.Game.Utils
             try
             {
 
-                var segment = new ArraySegment<byte>();
-                var result = await client.ReceiveAsync(segment, CancellationToken.None);
+                byte[] buffer = new byte[1024 * 4];
+                var result = await client.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
 
-                return Encoding.UTF8.GetString(segment.Array);
+                return Encoding.UTF8.GetString(buffer);
             }
             catch (Exception e)
             {
@@ -184,10 +174,10 @@ namespace Medievalica.Game.Utils
             try
             {
 
-                var segment = new ArraySegment<byte>();
-                var result = await client.ReceiveAsync(segment, CancellationToken.None);
+                byte[] buffer = new byte[1024 * 4];
+                var result = await client.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
 
-                return segment.Array;
+                return buffer;
             }
             catch (Exception e)
             {

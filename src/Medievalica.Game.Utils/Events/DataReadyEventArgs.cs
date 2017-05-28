@@ -8,11 +8,11 @@ namespace Medievalica.Game.Utils.Events
 
     public class DataReadyEventArgs : EventArgs
     {
-        public IResultCommand Result { get; private set; }
+        public object Result { get; private set; }
 
-        public DataReadyEventArgs(IResultCommand command)
+        public DataReadyEventArgs(object message)
         {
-            Result = command;
+            Result = message;
 
         }
 

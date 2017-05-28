@@ -4,15 +4,15 @@ using System.Text;
 
 namespace Medievalica.Game.Utils.Commands
 {
-    class QueryCommand : SimpleCommand
+    public class QueryCommand : SimpleCommand
     {
 
-        public string[] QueryArgs { get; private set; }
+        public string[] QueryArgs => Data as string[];
 
         public QueryCommand(string commandName, params string[] queryArgs)
             : base(commandName)
         {
-            QueryArgs = queryArgs;
+            Data = queryArgs ?? new string[] { };
 
         }
     }

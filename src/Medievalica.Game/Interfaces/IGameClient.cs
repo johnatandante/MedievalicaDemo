@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 namespace Medievalica.Game.Interfaces
 {
     
-    public interface IGameClient {
-
-        string Name { get; }
+    public interface IGameClient 
+        : ISessionClient
+    {
 
         Task Connect();
         Task Disconnect();
